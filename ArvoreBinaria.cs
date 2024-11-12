@@ -1,8 +1,7 @@
-class ArvoreBinaria{
-        public No? Raiz {get; set;} = null;
-        public List<string> Ligacoes {get; set;} = new List<string>();
-        public void Inserir(int valor){
-            var novoNo = new No(valor);
+class ArvoreBinaria<T> where T : IComparable<T>{
+        public No<T>? Raiz {get; set;} = null;
+        public void Inserir(T valor){
+            var novoNo = new No<T>(valor);
 
             if(Raiz == null){
                 Raiz = novoNo;
@@ -11,11 +10,10 @@ class ArvoreBinaria{
                 while(true){
                     var pai = atual;
                     // Esquerda
-                    if(valor < atual.Valor){
+                    if(valor.CompareTo(atual.Valor) < 0){
                         atual = atual.Esquerda;
                         if(atual == null){
                             pai.Esquerda = novoNo;
-                            Ligacoes.Add($"{pai.Valor} -> {novoNo.Valor}");
                             return;
                         }
                     }
@@ -24,20 +22,19 @@ class ArvoreBinaria{
                         atual = atual.Direita;
                         if(atual == null){
                             pai.Direita = novoNo;
-                            Ligacoes.Add($"{pai.Valor} -> {novoNo.Valor}");
                             return;
                         }
                     }
                 }
         }
     }
-        public No? Buscar(int valor){
+        public No<T>? Buscar(T valor){
             var atual = Raiz;
             while(atual != null){
-                if(atual.Valor == valor){
+                if(atual.Valor.CompareTo(valor) == 0){
                     return atual;
                 }
-                if(valor < atual.Valor){
+                if(valor.CompareTo(atual.Valor) < 0){
                     atual = atual.Esquerda;
                 }else{
                     atual = atual.Direita;
@@ -45,14 +42,14 @@ class ArvoreBinaria{
             }
             return null;
         }
-        public void Remover(int valor){
-            No? atual = Raiz;
-            No? pai = Raiz;
+        public void Remover(T valor){
+            No<T>? atual = Raiz;
+            No<T>? pai = Raiz;
             bool e_esquerda = true;
 
-            while (atual != null && atual.Valor != valor){
+            while (atual != null && atual.Valor.CompareTo(valor) != 0){
                 pai = atual;
-                if(valor < atual.Valor){
+                if(valor.CompareTo(atual.Valor) < 0){
                     e_esquerda = true;
                     atual = atual.Esquerda;
                 }else{
@@ -69,93 +66,72 @@ class ArvoreBinaria{
                 if(atual == Raiz){
                     Raiz = null;
                 }else if(e_esquerda){
-                    Ligacoes.Remove($"{pai.Valor} -> {atual.Valor}");
                     pai.Esquerda = null;
                 }else{
-                    Ligacoes.Remove($"{pai.Valor} -> {atual.Valor}");
                     pai.Direita = null;
                 }
             }
 
             // Caso 2: Nó não possui filho na direita
             else if(atual != null && atual.Direita == null){
-                Ligacoes.Remove($"{pai.Valor} -> {atual.Valor}");
-                Ligacoes.Remove($"{atual.Valor} -> {atual.Esquerda.Valor}");
                 if(atual == Raiz){
                     Raiz = atual.Esquerda;
-                    Ligacoes.Add($"{pai.Valor} -> {atual.Esquerda.Valor}");
                 }else if(e_esquerda){
                     pai.Esquerda = atual.Esquerda;
-                    Ligacoes.Add($"{pai.Valor} -> {atual.Esquerda.Valor}");
                 }else{
                     pai.Direita = atual.Esquerda;
-                    Ligacoes.Add($"{pai.Valor} -> {atual.Esquerda.Valor}");
                 }
             }
 
             // Caso 3: Nó não possui filho na esquerda
             else if(atual != null && atual.Esquerda == null){
-                Ligacoes.Remove($"{pai.Valor} -> {atual.Valor}");
-                Ligacoes.Remove($"{atual.Valor} -> {atual.Direita.Valor}");
                 if(atual == Raiz){
                     Raiz = atual.Direita;
-                    Ligacoes.Add($"{pai.Valor} -> {atual.Direita.Valor}");
                 }else if(e_esquerda){
                     pai.Esquerda = atual.Direita;
-                    Ligacoes.Add($"{pai.Valor} -> {atual.Direita.Valor}");
                 }else{
                     pai.Direita = atual.Direita;
-                    Ligacoes.Add($"{pai.Valor} -> {atual.Direita.Valor}");
                 }
             }
 
             //Caso 4: Nó possui dois filhos
             else{
-                No? sucessor = BuscarSucessor(atual);
-                Ligacoes.Remove($"{pai.Valor} -> {atual.Valor}");
-                Ligacoes.Remove($"{atual.Valor} -> {sucessor.Valor}");
-                Ligacoes.Remove($"{atual.Valor} -> {atual.Esquerda.Valor}");
-                Ligacoes.Remove($"{atual.Valor} -> {atual.Direita.Valor}");
+                No<T>? sucessor = BuscarSucessor(atual.Valor);
                 if(atual == Raiz){
-                    Ligacoes.Add($"{Raiz.Valor} -> {sucessor.Valor}");
                     Raiz = sucessor;
                 }else if(e_esquerda){
-                    Ligacoes.Add($"{pai.Valor} -> {sucessor.Valor}");
                     pai.Esquerda = sucessor;
                 }else{
-                    Ligacoes.Add($"{pai.Valor} -> {sucessor.Valor}");
                     pai.Direita = sucessor;
                 }
-
-                Ligacoes.Add($"{sucessor.Valor} -> {atual.Esquerda.Valor}");
-                //Ligacoes.Add($"{sucessor.Valor} -> {atual.Direita.Valor}");
 
                 sucessor.Esquerda = atual.Esquerda;
             }
 
         }
 
-        private No? BuscarSucessor(No? no){
-            No? paiSucessor = no;
-            No? sucessor = no;
-            No? atual = no.Direita;
-
-            while(atual != null){
-                paiSucessor = sucessor;
-                sucessor = atual;
+        private No<T>? BuscarSucessor(T valor){
+            var atual = Raiz;
+            while (atual != null)
+            {
+            if (atual.Valor.CompareTo(valor) == 0)
+            {
+                return atual;
+            }
+            if (valor.CompareTo(atual.Valor) < 0)
+            {
                 atual = atual.Esquerda;
             }
-
-            if(sucessor != no.Direita){
-                paiSucessor.Esquerda = sucessor.Direita;
-                sucessor.Direita = no.Direita;
+            else
+            {
+                atual = atual.Direita;
             }
-
-            return sucessor;
+        }
+        return null;
         }
 
         // Pré-ordem
-        public void ImprimirPreOrdem(No? no){
+        public void ImprimirPreOrdem(No<T>? no){
             if(no != null){
                 Console.WriteLine(no.MostrarNo());
                 ImprimirPreOrdem(no.Esquerda);
@@ -164,7 +140,7 @@ class ArvoreBinaria{
         }
 
         // Em-ordem
-        public void ImprimirEmOrdem(No? no){
+        public void ImprimirEmOrdem(No<T>? no){
             if(no != null){
                 ImprimirEmOrdem(no.Esquerda);
                 Console.WriteLine(no.MostrarNo());
@@ -173,24 +149,24 @@ class ArvoreBinaria{
         }
 
         // Pós-ordem
-        public void ImprimirPosOrdem(No? no){
+        public void ImprimirPosOrdem(No<T>? no){
             if(no != null){
                 ImprimirPosOrdem(no.Esquerda);
                 ImprimirPosOrdem(no.Direita);
                 Console.WriteLine(no.MostrarNo());
             }
         }
-        
-        public void Imprimir(){
-            Console.WriteLine($"Ligações: \n{string.Join("\n", Ligacoes)}");
-        }
 }
 
 
-public class No(int valor){
-    public int Valor {get; set;} = valor;
-    public No? Esquerda {get; set;} = null;
-    public No? Direita {get; set;} = null;
+public class No<T> where T : IComparable<T>{
+
+    public No(T valor){
+        Valor = valor;
+    }
+    public T Valor {get; set;}
+    public No<T>? Esquerda {get; set;} = null;
+    public No<T>? Direita {get; set;} = null;
 
     public string MostrarNo(){
         return Valor.ToString();
