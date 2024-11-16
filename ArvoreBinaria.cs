@@ -1,4 +1,4 @@
-class ArvoreBinaria<T> where T : IComparable<T>{
+class ArvoreBinaria<T> where T : IArvore<T>, IComparable<T>{
         public No<T>? Raiz {get; set;} = null;
         public void Inserir(T valor){
             var novoNo = new No<T>(valor);
@@ -14,6 +14,7 @@ class ArvoreBinaria<T> where T : IComparable<T>{
                         atual = atual.Esquerda;
                         if(atual == null){
                             pai.Esquerda = novoNo;
+                            novoNo.Pai = pai;
                             return;
                         }
                     }
@@ -22,12 +23,13 @@ class ArvoreBinaria<T> where T : IComparable<T>{
                         atual = atual.Direita;
                         if(atual == null){
                             pai.Direita = novoNo;
+                            novoNo.Pai = pai;
                             return;
                         }
                     }
                 }
+            }
         }
-    }
         public No<T>? Buscar(T valor){
             var atual = Raiz;
             while(atual != null){
@@ -109,7 +111,20 @@ class ArvoreBinaria<T> where T : IComparable<T>{
             }
 
         }
+        public void Mostrar(){
 
+        }
+        public int Altura(No<T>? no){
+            if (no == null) {
+                return -1;
+            }
+            int alturaEsquerda = Altura(no.Esquerda);
+            int alturaDireita = Altura(no.Direita);
+            return Math.Max(alturaEsquerda, alturaDireita) + 1;
+        }
+        public int Profundidade(No<T>? no){
+            return 0;
+        }
         private No<T>? BuscarSucessor(T valor){
             var atual = Raiz;
             while (atual != null)
@@ -129,31 +144,28 @@ class ArvoreBinaria<T> where T : IComparable<T>{
         }
         return null;
         }
-
         // Pré-ordem
         public void ImprimirPreOrdem(No<T>? no){
             if(no != null){
-                Console.WriteLine(no.MostrarNo());
+                Console.WriteLine(no.Valor);
                 ImprimirPreOrdem(no.Esquerda);
                 ImprimirPreOrdem(no.Direita);
             }
         }
-
         // Em-ordem
         public void ImprimirEmOrdem(No<T>? no){
             if(no != null){
                 ImprimirEmOrdem(no.Esquerda);
-                Console.WriteLine(no.MostrarNo());
+                Console.WriteLine(no.Valor);
                 ImprimirEmOrdem(no.Direita);
             }
         }
-
         // Pós-ordem
         public void ImprimirPosOrdem(No<T>? no){
             if(no != null){
                 ImprimirPosOrdem(no.Esquerda);
                 ImprimirPosOrdem(no.Direita);
-                Console.WriteLine(no.MostrarNo());
+                Console.WriteLine(no.Valor);
             }
         }
 }
@@ -167,8 +179,5 @@ public class No<T> where T : IComparable<T>{
     public T Valor {get; set;}
     public No<T>? Esquerda {get; set;} = null;
     public No<T>? Direita {get; set;} = null;
-
-    public string MostrarNo(){
-        return Valor.ToString();
-    }
+    public No<T>? Pai {get; set;} = null;
 }
