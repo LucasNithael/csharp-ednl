@@ -1,4 +1,6 @@
-class ArvoreBinaria<T> where T : IArvore<T>, IComparable<T>{
+using System.Data;
+
+class ArvoreBinaria<T> where T : IComparable<T>{
         public No<T>? Raiz {get; set;} = null;
         public void Inserir(T valor){
             var novoNo = new No<T>(valor);
@@ -45,74 +47,112 @@ class ArvoreBinaria<T> where T : IArvore<T>, IComparable<T>{
             return null;
         }
         public void Remover(T valor){
-            No<T>? atual = Raiz;
-            No<T>? pai = Raiz;
-            bool e_esquerda = true;
-
-            while (atual != null && atual.Valor.CompareTo(valor) != 0){
-                pai = atual;
-                if(valor.CompareTo(atual.Valor) < 0){
-                    e_esquerda = true;
-                    atual = atual.Esquerda;
-                }else{
-                    e_esquerda = false;
-                    atual = atual.Direita;
-                }
-                if(atual == null){
-                    return;
-                }
+            var no = Buscar(valor);
+            
+            if(no == null){
+                throw new Exception("Valor não encontrado");
             }
 
+            if(no == Raiz){
+                Raiz = null;
+                return;
+            }
+
+            var pai = no.Pai;
+
             // Caso 1: Nó folha
-            if(atual != null && atual.Esquerda == null && atual.Direita == null){
-                if(atual == Raiz){
+            if(no.Esquerda == null && no.Direita == null){
+                if(no == Raiz)
                     Raiz = null;
-                }else if(e_esquerda){
+                else if(no == pai.Esquerda)
                     pai.Esquerda = null;
-                }else{
+                else
                     pai.Direita = null;
-                }
             }
 
             // Caso 2: Nó não possui filho na direita
-            else if(atual != null && atual.Direita == null){
-                if(atual == Raiz){
-                    Raiz = atual.Esquerda;
-                }else if(e_esquerda){
-                    pai.Esquerda = atual.Esquerda;
-                }else{
-                    pai.Direita = atual.Esquerda;
+            else if(no.Direita == null){
+                if(no == Raiz){
+                    Raiz = no.Esquerda;
+                    Raiz.Pai = null;
+                }
+                else{
+                    no.Esquerda.Pai = pai;
+                    if(no == pai.Esquerda) 
+                        pai.Esquerda = no.Esquerda;
+                    else 
+                        pai.Direita = no.Esquerda;
                 }
             }
 
             // Caso 3: Nó não possui filho na esquerda
-            else if(atual != null && atual.Esquerda == null){
-                if(atual == Raiz){
-                    Raiz = atual.Direita;
-                }else if(e_esquerda){
-                    pai.Esquerda = atual.Direita;
-                }else{
-                    pai.Direita = atual.Direita;
+            else if(no.Esquerda == null){
+                if(no == Raiz){
+                    Raiz = no.Esquerda;
+                    Raiz.Pai = null;
+                }
+                else{
+                    no.Direita.Pai = pai;
+                    if(no == pai.Esquerda) 
+                        pai.Esquerda = no.Direita;
+                    else 
+                        pai.Direita = no.Direita;
                 }
             }
 
-            //Caso 4: Nó possui dois filhos
-            else{
-                No<T>? sucessor = BuscarSucessor(atual.Valor);
-                if(atual == Raiz){
-                    Raiz = sucessor;
-                }else if(e_esquerda){
-                    pai.Esquerda = sucessor;
-                }else{
-                    pai.Direita = sucessor;
+            // Caso 4: Nó possui dois filhos
+            else
+            {
+                var sucessor = BuscarSucessor(no);
+
+                // Ajustar o pai do sucessor (remover o sucessor de sua posição original)
+                if (sucessor.Pai != no)
+                {
+                    sucessor.Pai.Esquerda = sucessor.Direita;
+                    if (sucessor.Direita != null)
+                    {
+                        sucessor.Direita.Pai = sucessor.Pai;
+                    }
                 }
 
-                sucessor.Esquerda = atual.Esquerda;
+                // Atualizar referências do sucessor
+                sucessor.Esquerda = no.Esquerda;
+                sucessor.Direita = no.Direita;
+
+                if (no.Esquerda != null)
+                {
+                    no.Esquerda.Pai = sucessor;
+                }
+                if (no.Direita != null)
+                {
+                    no.Direita.Pai = sucessor;
+                }
+
+                // Atualizar referência do pai do nó removido
+                if (no == Raiz)
+                {
+                    Raiz = sucessor;
+                    Raiz.Pai = null;
+                }
+                else if (no == pai.Esquerda)
+                {
+                    pai.Esquerda = sucessor;
+                }
+                else
+                {
+                    pai.Direita = sucessor;
+                }
+                sucessor.Pai = pai;
             }
 
         }
-        public void Mostrar(){
 
+        private No<T>? BuscarSucessor(No<T> no){
+            var atual = no.Direita;
+            while(atual != null && atual.Esquerda != null){
+                atual = atual.Esquerda;
+            }
+            return atual;
         }
         public int Altura(No<T>? no){
             if (no == null) {
@@ -123,26 +163,15 @@ class ArvoreBinaria<T> where T : IArvore<T>, IComparable<T>{
             return Math.Max(alturaEsquerda, alturaDireita) + 1;
         }
         public int Profundidade(No<T>? no){
-            return 0;
-        }
-        private No<T>? BuscarSucessor(T valor){
-            var atual = Raiz;
-            while (atual != null)
-            {
-            if (atual.Valor.CompareTo(valor) == 0)
-            {
-                return atual;
+            int profundidade = 0;
+            var atual = no;
+
+            while(atual != null && atual.Pai != null){
+                profundidade++;
+                atual = atual.Pai;
             }
-            if (valor.CompareTo(atual.Valor) < 0)
-            {
-                atual = atual.Esquerda;
-            }
-            else
-            {
-                atual = atual.Direita;
-            }
-        }
-        return null;
+
+            return profundidade;
         }
         // Pré-ordem
         public void ImprimirPreOrdem(No<T>? no){

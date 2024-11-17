@@ -11,11 +11,3 @@ a.Inserir(17);
 a.Inserir(1);
 a.Inserir(-1);
 a.Inserir(6);
-
-a.Remover(10);
-
-// var no = a.Buscar(15);
-// Console.WriteLine(no?.MostrarNo());
-
-a.ImprimirPreOrdem(a.Raiz);
-//a.Imprimir();
