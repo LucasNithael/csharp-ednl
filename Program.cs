@@ -10,5 +10,5 @@ a.Inserir(22);
 a.Inserir(21);
 a.Inserir(23);
 
-
+a.Mostrar();
 

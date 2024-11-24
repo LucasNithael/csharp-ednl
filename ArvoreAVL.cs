@@ -1,5 +1,53 @@
 class ArvoreAVL<T> where T : IComparable<T>{
     public NoAVL<T>? Raiz {get; set;} = null;
+    public void Mostrar(){
+        if(Raiz == null){
+            Console.WriteLine("Árvore vazia");
+            return;
+        }
+
+        // Lista auxiliar para armazenar nós em ordem
+        List<NoAVL<T>> lista = new List<NoAVL<T>>();
+        EmOrdem(Raiz, lista);
+
+        int altura = Altura(Raiz);
+        int largura = lista.Count;
+
+        // Matriz para armazenar os nós por nível
+        string[,] matriz = new string[altura + 1, largura];
+
+        // Popular a matriz com os valores dos nós
+        for (int i = 0; i < lista.Count; i++)
+        {
+            NoAVL<T> no = lista[i];
+            int profundidade = Profundidade(no);
+            matriz[profundidade, i] = $"{no.Valor}[{ObterFB(no)}]";
+        }
+
+        // Exibir a matriz
+        for (int i = 0; i <= altura; i++)
+        {
+            for (int j = 0; j < largura; j++)
+            {
+                if (matriz[i, j] == null)
+                {
+                    Console.Write("\t");
+                }
+                else
+                {
+                    Console.Write($"\t{matriz[i, j]}");
+                }
+            }
+            Console.WriteLine();
+        }
+    }
+    private void EmOrdem(NoAVL<T>? no, List<NoAVL<T>> lista){
+        if(no != null){
+            EmOrdem(no.Esquerda, lista);
+            lista.Add(no);
+            EmOrdem(no.Direita, lista);
+        }
+    }
     private int Altura(NoAVL<T>? no){
         return no == null ? -1 : no.Altura;
     }
@@ -15,7 +63,6 @@ class ArvoreAVL<T> where T : IComparable<T>{
     private int ObterFB(NoAVL<T>? no){
         return no == null ? 0 : Altura(no.Direita) - Altura(no.Esquerda);
     }
-
     private NoAVL<T> RotacaoDireita(NoAVL<T> y){
         NoAVL<T> x = y.Esquerda!;
         NoAVL<T> T2 = x.Direita!;
@@ -31,7 +78,6 @@ class ArvoreAVL<T> where T : IComparable<T>{
         // Retorna a nova raiz
         return x;
     }
-
     private NoAVL<T> RotacaoEsquerda(NoAVL<T> x){
         NoAVL<T> y = x.Direita!;
         NoAVL<T> T2 = y.Esquerda!;
@@ -47,17 +93,14 @@ class ArvoreAVL<T> where T : IComparable<T>{
         // Retorna a nova raiz
         return y;
     }
-
     private NoAVL<T> RotacaoEsquerdaDireita(NoAVL<T> no){
         no.Esquerda = RotacaoEsquerda(no.Esquerda!);
         return RotacaoDireita(no);
     }
-
     private NoAVL<T> RotacaoDireitaEsquerda(NoAVL<T> no){
         no.Direita = RotacaoDireita(no.Direita!);
         return RotacaoEsquerda(no);
     }
-
     private NoAVL<T> Inserir(NoAVL<T> no, T valor, NoAVL<T>? pai){
         // Passo 1: realiza a inserção normal de uma árvore binária de busca
         if(no == null){
@@ -98,11 +141,9 @@ class ArvoreAVL<T> where T : IComparable<T>{
 
         return no;
     }
-
     public void Inserir(T valor){
         Raiz = Inserir(Raiz, valor, null);
     }
-
     public NoAVL<T>? Remover(NoAVL<T> no, T valor){
         if(no == null){
             return null;
@@ -164,11 +205,9 @@ class ArvoreAVL<T> where T : IComparable<T>{
 
         return no;
     }
-
     public void Remover(T valor){
         Raiz = Remover(Raiz, valor);
     }
-
     private NoAVL<T> ObterMenor(NoAVL<T> no){
         NoAVL<T> atual = no;
         while(atual.Esquerda != null){
@@ -176,7 +215,6 @@ class ArvoreAVL<T> where T : IComparable<T>{
         }
         return atual;
     }
-
     public NoAVL<T>? Buscar(T valor){
         var atual = Raiz;
         while(atual != null){
@@ -191,7 +229,6 @@ class ArvoreAVL<T> where T : IComparable<T>{
         }
         return null;
     }
-
 
 }
 
