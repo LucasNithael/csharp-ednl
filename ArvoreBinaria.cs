@@ -146,6 +146,11 @@ class ArvoreBinaria<T> where T : IComparable<T>{
             }
 
         }
+        public void Mostrar(){
+            if(Raiz == null){
+                throw new Exception("Árvore vazia");
+            } 
+        }
 
         private No<T>? BuscarSucessor(No<T> no){
             var atual = no.Direita;
@@ -173,6 +178,12 @@ class ArvoreBinaria<T> where T : IComparable<T>{
 
             return profundidade;
         }
+        public int Tamanho(No<T>? no){
+            if(no == null){
+                return 0;
+            }
+            return 1 + Tamanho(no.Esquerda) + Tamanho(no.Direita);
+        }
         // Pré-ordem
         public void ImprimirPreOrdem(No<T>? no){
             if(no != null){
@@ -197,6 +208,7 @@ class ArvoreBinaria<T> where T : IComparable<T>{
                 Console.WriteLine(no.Valor);
             }
         }
+
 }
 
 

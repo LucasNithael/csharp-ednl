@@ -1,13 +1,14 @@
 ﻿//http://webgraphviz.com/
 
-var a = new ArvoreBinaria<int>();
+var a = new ArvoreAVL<int>();
 a.Inserir(10);
 a.Inserir(5);
 a.Inserir(15);
-a.Inserir(3);
-a.Inserir(7);
-a.Inserir(12);
-a.Inserir(17);
-a.Inserir(1);
-a.Inserir(-1);
-a.Inserir(6);
+a.Inserir(2);
+a.Inserir(8);
+a.Inserir(22);
+a.Inserir(21);
+a.Inserir(23);
+
+
+
