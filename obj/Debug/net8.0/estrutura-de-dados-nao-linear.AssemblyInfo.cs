@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("estrutura-de-dados-nao-linear")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+39ee5aff4c0f821f24f75a0b6cf96de09129a9ad")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+30fe22eceb95f26db59bdb0e79c7c177643a5af6")]
 [assembly: System.Reflection.AssemblyProductAttribute("estrutura-de-dados-nao-linear")]
 [assembly: System.Reflection.AssemblyTitleAttribute("estrutura-de-dados-nao-linear")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

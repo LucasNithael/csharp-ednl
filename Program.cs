@@ -1,14 +1,18 @@
 ﻿//http://webgraphviz.com/
 
 var a = new ArvoreAVL<int>();
-a.Inserir(10);
-a.Inserir(5);
-a.Inserir(15);
-a.Inserir(2);
-a.Inserir(8);
-a.Inserir(22);
-a.Inserir(21);
-a.Inserir(23);
 
-a.Mostrar();
+List<int> lista = new List<int>(){10, 5, 15, 2, 8, 22, 21, 23};
 
+foreach (var item in lista)
+{
+    a.Inserir(item);
+}
+
+foreach (var item in lista)
+{
+    a.VerificarNo(item);
+    Console.WriteLine("=====================================");
+}
+
+a.EhAVL();
