@@ -9,10 +9,27 @@ foreach (var item in lista)
     a.Inserir(item);
 }
 
-foreach (var item in lista)
-{
-    a.VerificarNo(item);
-    Console.WriteLine("=====================================");
-}
+// foreach (var item in lista)
+// {
+//     a.VerificarNo(item);
+//     Console.WriteLine("=====================================");
+// }
 
-a.EhAVL();
+a.Mostrar();
+
+a.Remover(10);
+
+a.Mostrar();
+
+a.Remover(15);
+
+a.Mostrar();
+
+a.Remover(5);
+
+a.Mostrar();
+// foreach (var item in lista)
+// {
+//     a.VerificarNo(item);
+//     Console.WriteLine("=====================================");
+// }

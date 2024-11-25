@@ -40,6 +40,7 @@ class ArvoreAVL<T> where T : IComparable<T>{
             }
             Console.WriteLine();
         }
+        Console.WriteLine("=======================================================");
     }
     private void EmOrdem(NoAVL<T>? no, List<NoAVL<T>> lista){
         if(no != null){
