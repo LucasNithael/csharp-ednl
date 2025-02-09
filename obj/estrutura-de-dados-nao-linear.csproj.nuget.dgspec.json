@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/workspaces/estrutura-de-dados-nao-linear/estrutura-de-dados-nao-linear.csproj": {}
+    "C:\\Users\\gilen\\Documents\\csharp-ednl\\estrutura-de-dados-nao-linear.csproj": {}
   },
   "projects": {
-    "/workspaces/estrutura-de-dados-nao-linear/estrutura-de-dados-nao-linear.csproj": {
+    "C:\\Users\\gilen\\Documents\\csharp-ednl\\estrutura-de-dados-nao-linear.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/workspaces/estrutura-de-dados-nao-linear/estrutura-de-dados-nao-linear.csproj",
+        "projectUniqueName": "C:\\Users\\gilen\\Documents\\csharp-ednl\\estrutura-de-dados-nao-linear.csproj",
         "projectName": "estrutura-de-dados-nao-linear",
-        "projectPath": "/workspaces/estrutura-de-dados-nao-linear/estrutura-de-dados-nao-linear.csproj",
-        "packagesPath": "/home/codespace/.nuget/packages/",
-        "outputPath": "/workspaces/estrutura-de-dados-nao-linear/obj/",
+        "projectPath": "C:\\Users\\gilen\\Documents\\csharp-ednl\\estrutura-de-dados-nao-linear.csproj",
+        "packagesPath": "C:\\Users\\gilen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gilen\\Documents\\csharp-ednl\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/codespace/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\gilen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -32,11 +34,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -58,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.402/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.112/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
