@@ -1,35 +1,54 @@
-﻿////http://webgraphviz.com/
+﻿
+// Códigos de Testes
 
-//var a = new ArvoreAVL<int>();
+string[] linhas = File.ReadAllLines("TrabalhoGrafo/labirinto.dat");
+int linhasLabirinto = linhas.Length;
+int colunasLabirinto = linhas[0].Length;
+int[,] matrizLabirinto = new int[linhasLabirinto, colunasLabirinto];
+for (int i = 0; i < linhasLabirinto; i++)
+{
+    for (int j = 0; j < colunasLabirinto; j++)
+    {
+        matrizLabirinto[i, j] = int.Parse(linhas[i][j].ToString());
+    }
+}
 
-//List<int> lista = new List<int>(){10, 5, 15, 2, 8, 22, 21, 23};
 
-//foreach (var item in lista)
-//{
-//    a.Inserir(item);
-//}
 
-//// foreach (var item in lista)
-//// {
-////     a.VerificarNo(item);
-////     Console.WriteLine("=====================================");
-//// }
+var alg = new Algoritmos(matrizLabirinto);
+ alg.MostrarMatriz();
+// alg.MostrarSaidas();
+// alg.MostrarPartida();
 
-//a.Mostrar();
 
-//a.Remover(10);
+//tempo inicial
+var tempoInicial = DateTime.Now;
+var caminho = alg.Dijkstra();
+//tempo final
+var tempoFinal = DateTime.Now;
+var tempoTotal = tempoFinal - tempoInicial;
+Console.WriteLine($"Tempo total Dijkstra: {tempoTotal.TotalMilliseconds}ms"); // 5.0608ms
 
-//a.Mostrar();
+Console.WriteLine("Caminho Dijkstra:");
+Console.Write("{");
+foreach (var c in caminho)
+{
+    Console.Write($"({c.Item1}, {c.Item2}),");
+}
+Console.WriteLine("}");
 
-//a.Remover(15);
+//tempo inicial
+tempoInicial = DateTime.Now;
+var caminho2 = alg.Aestrela();
+//tempo final
+tempoFinal = DateTime.Now;
+tempoTotal = tempoFinal - tempoInicial;
+Console.WriteLine($"Tempo total Aestrela: {tempoTotal.TotalMilliseconds}ms"); // 5.9272ms
 
-//a.Mostrar();
-
-//a.Remover(5);
-
-//a.Mostrar();
-//// foreach (var item in lista)
-//// {
-////     a.VerificarNo(item);
-////     Console.WriteLine("=====================================");
-//// }
+Console.WriteLine("Caminho Aestrela:");
+Console.Write("{");
+foreach (var c in caminho2)
+{
+    Console.Write($"({c.Item1}, {c.Item2}),");
+}
+Console.WriteLine("}");
